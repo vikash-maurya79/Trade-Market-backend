@@ -8,4 +8,5 @@ router.get('/holdings/api', authMiddleware, holdingsController);
 router.get('/watchlist/api', authMiddleware, watchlistController);
 router.get('/positions/api', authMiddleware, positionsController);
 
+
 module.exports = router;
