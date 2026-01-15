@@ -5,6 +5,7 @@ const { sellController } = require('../../controllers/buySellController/sellCont
 const { buyController } = require('../../controllers/buySellController/buyController');
 
 router.post('/sell/api', authMiddleware, sellController);
+
 router.post('/buy/api', authMiddleware, buyController);
 
 module.exports = router;
