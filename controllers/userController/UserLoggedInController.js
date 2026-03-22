@@ -5,5 +5,6 @@ const UserLoggedInController = async (req, res) => {
             isLoggedIn: true
         })
     }
+    
 }
 module.exports = { UserLoggedInController };

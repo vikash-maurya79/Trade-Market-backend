@@ -1,3 +1,4 @@
+const DemateAccount = require("../../models/DemateAccountModel");
 const holdings = require("../../models/HoldingsModel");
 
 const sellController = async (req, res) => {
@@ -7,12 +8,12 @@ const sellController = async (req, res) => {
             user: req.user.id
         });
 
+        let accountFound = await DemateAccount.findOne({ accountOwner: req.user.id });
         if (!foundedHolding) {
             return res.status(404).json({
                 message: 'Data not found'
             });
         }
-
         const availableQty = foundedHolding.qty;
         const sellQty = req.body.stockQty;
 
@@ -27,20 +28,26 @@ const sellController = async (req, res) => {
                 message: 'Somthing went wrong'
             });
         }
+        let price_per_stock = foundedHolding.price;
+        let total_price = Number(price_per_stock * sellQty);
         const remainingQty = availableQty - sellQty;
         if (remainingQty === 0) {
-            console.log('running first step');
             await foundedHolding.deleteOne();
-
+            accountFound.amount += total_price;
+            let accountData = await accountFound.save();
             return res.status(200).json({
-                message: 'Order successfull'
+                message: 'Order successfull',
+                data: accountData
             });
         }
         foundedHolding.qty = remainingQty;
         await foundedHolding.save();
+        accountFound.amount += total_price;
+        let accountData = await accountFound.save();
 
         return res.status(200).json({
-            message: 'Order done !'
+            message: 'Order done !',
+            data: accountData
         });
 
     } catch (err) {

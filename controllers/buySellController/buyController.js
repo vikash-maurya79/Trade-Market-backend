@@ -2,8 +2,16 @@
 const order = require('../../models/OrderModel.js');
 const User = require("../../models/UserModel.js");
 const { averageCalculator, quantityCalculator } = require('./calculator.js');
+const holdings = require('../../models/HoldingsModel.js')
+const DemateAccount = require('../../models/DemateAccountModel.js');
 
 const buyController = async (req, res) => {
+    let accountFound = await DemateAccount.findOne({ accountOwner: req.user.id })
+    if (!accountFound) {
+        return res.status(400).json({
+            message: 'You do not have a demate account'
+        })
+    }
     if (!req.body.quantity ||
         !req.body.amount ||
         !req.body.mode) {
@@ -59,9 +67,12 @@ const buyController = async (req, res) => {
         userFound.holding.push(savedHolding._id);
         await userFound.save();
     }
-    tempOrder.save();
+    accountFound.amount -= req.body.amount;
+    let accountData = await accountFound.save();
+    await tempOrder.save();
     res.status(200).json({
-        message: 'Order done !'
+        message: 'Order done !',
+        data: accountData
     })
 }
 module.exports = { buyController };

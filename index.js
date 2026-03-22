@@ -18,7 +18,7 @@ const checkStockRouter = require('./routers/checkStockRouter/checkStockRouter.js
 const logoutRouter = require('./routers/logoutRouter/logoutRouter.js');
 const UserRouter = require('./routers/userRouter/UserRouter.js');
 const viewStockRouter = require('./routers/viewStockRouter/viewStockRouter.js');
-
+const demateRouter = require('./routers/demateRouter/demateRouter.js');
 
 require("dotenv").config();
 const mongoose = require("mongoose");
@@ -37,6 +37,7 @@ app.use('/view-stock', viewStockRouter);
 app.use('/stock', buySellRouter);
 app.use('/data', checkStockRouter);
 app.use('/user-logout', logoutRouter);
+app.use('/account', demateRouter);
 
 
 app.listen(PORT, () => {

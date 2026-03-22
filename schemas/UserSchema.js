@@ -3,10 +3,11 @@ const UserSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
-    demateAccountId: {
+    demateAccountId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'DemateAccount'
-    },
+    }
+    ],
     holding: [
         {
             type: mongoose.Schema.Types.ObjectId,

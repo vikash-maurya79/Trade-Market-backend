@@ -1,5 +1,6 @@
 
 const WatchList = require("../../models/WatchListModel.js");
+const mongoose = require('mongoose');
 
 
 const viewStockController = async (req, res) => {
